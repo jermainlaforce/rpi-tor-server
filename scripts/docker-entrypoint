@@ -1,0 +1,93 @@
+#!/bin/bash
+set -o errexit
+
+echo -e "\\n========================================================"
+
+# If DataDirectory or secret_id_key is mounted here, it must be owned by the debian-tor user
+chown -Rv debian-tor:debian-tor /var/lib/tor
+
+if [ ! -e /tor-config-done ]; then
+    touch /tor-config-done   # only run this once
+
+    # Add a Nickname, if none has been set in torrc
+    if ! grep -q '^Nickname ' /etc/tor/torrc; then
+        if [ "${TOR_NICKNAME}" == "Tor4" ]; then
+            # if user did not change the default Nickname, genetrate a random pronounceable one
+            RPW=$(pwgen -0A 10)
+            TOR_NICKNAME=${TOR_NICKNAME}${RPW}
+            echo "Setting random Nickname: ${TOR_NICKNAME}"
+        else
+            echo "Setting chosen Nickname: ${TOR_NICKNAME}"
+        fi
+        echo -e "\\nNickname ${TOR_NICKNAME}" >> /etc/tor/torrc
+    fi
+
+    # Add ContactInfo from env variable, if none has been set in torrc
+    if ! grep -q '^ContactInfo ' /etc/tor/torrc; then
+        if [  -n "${CONTACT_EMAIL}" ]; then
+            echo "Setting Contact Email: ${CONTACT_EMAIL}"
+            echo -e "\\nContactInfo ${CONTACT_EMAIL}" >> /etc/tor/torrc
+        fi
+    fi
+
+    # Add Throttle traffic from env variable, if none has been set in torrc
+    if ! grep -q '^RelayBandwidthRate ' /etc/tor/torrc; then
+        if [  -n "${Relay_BR}" ]; then
+		echo "Setting throttle rate: ${Relay_BR}"
+            echo -e "\\nRelayBandwidthRate ${Relay_BR}" >> /etc/tor/torrc
+        fi
+    fi
+    
+    # Add allowence for burst from env variable, if none has been set in torrc
+    if ! grep -q '^RelayBandwidthBurst ' /etc/tor/torrc; then
+	if [  -n "${Relay_BB}" ]; then
+            echo "Setting burst rate: ${Relay_BB}"
+            echo -e "\\nRelayBandwidthBurst ${Relay_BB}" >> /etc/tor/torrc
+        fi
+    fi
+
+    # Add ORPort from env variable, if none has been set in torrc (Port to advertise for incoming Tor connections)
+    if ! grep -q '^ORport ' /etc/tor/torrc; then
+        if [  -n "${ORPort}" ]; then
+            echo "Setting ORPort: ${ORPort}"
+            echo -e "\\nORPort ${ORPort}" >> /etc/tor/torrc
+        fi
+    fi
+    
+    # Add DirPort from env variable, if none has been set in torrc (Port to advertise for directory connections)
+    if ! grep -q '^DirPort ' /etc/tor/torrc; then
+        if [  -n "${DirPort}" ]; then
+            echo "Setting DirPort: ${DirPort}"
+            echo -e "\\nDirPort ${DirPort}" >> /etc/tor/torrc
+        fi
+    fi
+
+    # Run Tor only as a server (no local applications)
+    if ! grep -q '^SocksPort ' /etc/tor/torrc; then
+        echo -e "\\nSocksPort 0" >> /etc/tor/torrc
+    fi
+
+    # Run as a relay only (not as an exit node)
+    if ! grep -q '^ExitPolicy ' /etc/tor/torrc; then
+        echo -e "\\nExitPolicy reject *:*" >> /etc/tor/torrc
+    fi
+
+    # Run Tor as a regular user (do not change this)
+    if ! grep -q '^User ' /etc/tor/torrc; then
+        echo -e "\\nUser debian-tor" >> /etc/tor/torrc
+    fi
+
+    if ! grep -q '^DataDirectory ' /etc/tor/torrc; then
+        echo -e "\\nDataDirectory /var/lib/tor" >> /etc/tor/torrc
+    fi
+fi
+
+
+echo -e "\\n========================================================"
+# display Tor version & torrc in log
+tor --version
+cat /etc/tor/torrc
+echo -e "========================================================\\n"
+
+# else default to run whatever the user wanted like "bash"
+exec "$@"
