@@ -9,7 +9,7 @@
 
 The Tor network relies on volunteers to donate bandwidth. The more people who run relays, the faster the Tor network will be. If you have at least 2 megabits/s for both upload and download, please help out Tor by configuring your Tor to be a relay too.
 
-![Tor](https://gitweb.torproject.org/project/web/styleguide.git/tree/assets/static/images/icons/64x64/relay.png "Tor logo")
+![Tor](https://camo.githubusercontent.com/b52d76f0851c402c220ced3198f18e53e196fc7a2ac7544474fdafaec46257c4/68747470733a2f2f6d656469612e746f7270726f6a6563742e6f72672f696d6167652f6f6666696369616c2d696d616765732f323031312d746f722d6c6f676f2d666c61742e737667 "Tor logo")
 
 [`Tor`][1] is free software and an open network that helps you defend against
 traffic analysis, a form of network surveillance that threatens personal
