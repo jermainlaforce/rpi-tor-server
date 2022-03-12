@@ -2,10 +2,8 @@
 
 **Fork from [https://github.com/chriswayg/tor-server/issues/1](https://github.com/chriswayg/tor-server/issues/1)**
 
-[![badge](https://images.microbadger.com/badges/image/doudou34/tor-server.svg)](https://microbadger.com/images/doudou34/tor-server "Get your own image badge on microbadger.com") [![badge](https://images.microbadger.com/badges/version/doudou34/tor-server.svg)](https://microbadger.com/images/doudou34/tor-server "Get your own version badge on microbadger.com")
-
-**A complete, efficient and secure Tor relay server Docker image based on Debian Jessie**
-*This docker image will update automatically each time the Debian Jessie base image is updated and build & install the latest current stable version of Tor server. It will run Tor as an unprivileged regular user, as recommended by torproject.org.*
+**A complete, efficient and secure Tor relay server Docker image based on Debian Bullseye for arm64v7**
+*This docker image will update automatically each time the Debian Bullseye base image is updated and build & install the latest current stable version of Tor server. It will run Tor as an unprivileged regular user, as recommended by torproject.org.*
 
 The Tor network relies on volunteers to donate bandwidth. The more people who run relays, the faster the Tor network will be. If you have at least 2 megabits/s for both upload and download, please help out Tor by configuring your Tor to be a relay too.
 
@@ -31,7 +29,7 @@ You can set a Nickname (only letters and numbers) and a Contact Email using envi
 ```bash
 docker run -d --name=tor_relay_1 -p 9001:9001 \
 -e TOR_NICKNAME=Tor4docker -e CONTACT_EMAIL=tor4@example.org \
---restart=always doudou34/tor-server
+--restart=always dnikms/rpi-tor-server
 ```
 
 ## Tor configuration
@@ -47,7 +45,7 @@ For more detailed customisation edit `./torrc` on the host to the intended setti
 
 # Port to advertise for incoming Tor connections.
 # common ports are 9001, 443
-ORPort 9001
+ORPort 9001 IPv4Only - Or if you have IPv6Only specify or if you have both leave the port only
 
 # Mirror directory information for others (optional)
 # common ports are 9030, 80
@@ -86,8 +84,8 @@ Mount your customized `torrc` into the container. You can reuse the `secret_id_k
 ```bash
 docker run -d --name=tor_relay_1 -p 9001:9001 \
 -v $PWD/torrc:/etc/tor/torrc \
--v $PWD/secret_id_key:/var/lib/tor/keys/secret_id_key \
---restart=always doudou34/tor-server
+-v $PWD/keys:/var/lib/tor/keys/ \
+--restart=always dnikms/rpi-tor-server
 ```
 
 Check with ```docker logs tor_relay_1```. If you see the message ```[notice] Self-testing indicates your ORPort is reachable from the outside. Excellent. Publishing server descriptor.``` at the bottom after quite a while, your server started successfully.
@@ -98,7 +96,7 @@ Adapt this example `docker-compose.yml` with your settings:
 
 ```yaml
 relay:
-  image: doudou34/tor-server
+  image: dnikms/rpi-tor-server
   restart: always
   ports:
     - "9001:9001"
@@ -108,6 +106,14 @@ relay:
     TOR_NICKNAME: Tor4
     ## an email address to contact you
     CONTACT_EMAIL: email@example.org
+    ## Set throttle rate
+    Relay_BR: 1MB
+    ## Set brust throttle rate
+    Relay_BB: 1.5MB
+    ## If you want to change default port
+    ORPort: 443
+    ## If you want to change default dir port
+    DirPort: 80
 ```
 
 ### Start the Tor server
