@@ -1,8 +1,8 @@
-# Tor Relay Server on Docker
+# Tor Relay Server on Docker for Raspberry Pi arm64v8 architecture 
 
 **Fork from [https://github.com/chriswayg/tor-server/issues/1](https://github.com/chriswayg/tor-server/issues/1)**
 
-**A complete, efficient and secure Tor relay server Docker image based on Debian Bullseye for arm64v7**
+**A complete, efficient and secure Tor relay server Docker image based on Debian Bullseye for arm64v8**
 *This docker image will update automatically each time the Debian Bullseye base image is updated and build & install the latest current stable version of Tor server. It will run Tor as an unprivileged regular user, as recommended by torproject.org.*
 
 The Tor network relies on volunteers to donate bandwidth. The more people who run relays, the faster the Tor network will be. If you have at least 2 megabits/s for both upload and download, please help out Tor by configuring your Tor to be a relay too.
