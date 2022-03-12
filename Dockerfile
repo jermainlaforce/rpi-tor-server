@@ -28,7 +28,7 @@ COPY ./scripts/ /usr/local/bin/
 VOLUME /etc/tor /var/lib/tor
 
 # ORPort, DirPort, ObfsproxyPort
-EXPOSE 9090 9030 54444
+EXPOSE 9001 9002 54444
 
 ENTRYPOINT ["docker-entrypoint"]
 

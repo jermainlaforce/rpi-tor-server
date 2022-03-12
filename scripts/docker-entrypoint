@@ -48,8 +48,11 @@ if [ ! -e /tor-config-done ]; then
 
     # Add ORPort from env variable, if none has been set in torrc (Port to advertise for incoming Tor connections)
     if ! grep -q '^ORport ' /etc/tor/torrc; then
-        if [  -n "${ORPort}" ]; then
-            echo "Setting ORPort: ${ORPort}"
+        if [  -n "${ORPort}" == "9001" ]; then
+            ORPort=${ORPort}
+            echo "Setting default ORPort"
+        else
+            echo "Setting choosen port ORPort: ${ORPort}"
             echo -e "\\nORPort ${ORPort}" >> /etc/tor/torrc
         fi
     fi

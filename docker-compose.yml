@@ -1,5 +1,5 @@
 relay:
-  image: doudou34/tor-server
+  image: dnikms/rpi-tor-server
   restart: always
   ports:
     - "9001:9001"
