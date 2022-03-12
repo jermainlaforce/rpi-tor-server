@@ -1,7 +1,5 @@
 # Tor Relay Server on Docker
 
-**Fork is now up to date [https://github.com/DarkIsDude/tor-server/issues/5](https://github.com/DarkIsDude/tor-server/issues/5)**
-
 **Fork from [https://github.com/chriswayg/tor-server/issues/1](https://github.com/chriswayg/tor-server/issues/1)**
 
 [![badge](https://images.microbadger.com/badges/image/doudou34/tor-server.svg)](https://microbadger.com/images/doudou34/tor-server "Get your own image badge on microbadger.com") [![badge](https://images.microbadger.com/badges/version/doudou34/tor-server.svg)](https://microbadger.com/images/doudou34/tor-server "Get your own version badge on microbadger.com")
@@ -11,7 +9,7 @@
 
 The Tor network relies on volunteers to donate bandwidth. The more people who run relays, the faster the Tor network will be. If you have at least 2 megabits/s for both upload and download, please help out Tor by configuring your Tor to be a relay too.
 
-![Tor](https://styleguide.torproject.org/static/images/tor-logo/color.svg "Tor logo")
+![Tor](https://styleguide.torproject.org/static/images/tor-logo/white.svg "Tor logo")
 
 [`Tor`][1] is free software and an open network that helps you defend against
 traffic analysis, a form of network surveillance that threatens personal
